@@ -104,6 +104,8 @@ class Gsm8kAgentEvaluator(BaseEvaluator):
             if abs(float(soft_pred) - int(refer)) < 1e-6:
                 return True
         except Exception:
+            # result might not exists
+            # text cannot convert to float
             pass
         return False
 
@@ -124,6 +126,7 @@ class Gsm8kAgentEvaluator(BaseEvaluator):
         final_scope = 0
         total = len(references)
         for pred, refer, step in zip(predictions, references, steps):
+            # if final answer right
             if self.is_equal(pred, refer):
                 if self.get_action(step):
                     final_scope += 1
@@ -135,6 +138,7 @@ class Gsm8kAgentEvaluator(BaseEvaluator):
                     action_scope += 1
                     if not s['errmsg']:
                         code_scope += 1
+                        # whether action result is correct
                         reasoning_scope += self.soft_equal(pred, refer, s)
 
         result = dict(
