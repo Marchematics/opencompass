@@ -28,6 +28,7 @@ class TestPPLTokenization(unittest.TestCase):
         model = HuggingFaceBaseModel.__new__(HuggingFaceBaseModel)
         model.tokenizer = _RecordingTokenizer()
         model.max_seq_len = 32
+        model.drop_middle = False
 
         with self.assertRaises(_StopTokenization):
             model.get_ppl(['hello'])
